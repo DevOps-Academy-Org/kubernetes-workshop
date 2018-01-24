@@ -1,0 +1,9 @@
+[web]
+address = ":8080"
+ReadOnly = true
+
+[kubernetes]
+# Kubernetes server endpoint
+endpoint = "https://{{ ansible_hostname}}:6443"
+certAuthFilePath = "/etc/kubernetes/pki/ca.crt"
+token = "{{ traefiktoken.stdout |trim }}"

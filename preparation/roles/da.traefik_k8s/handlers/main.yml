@@ -1,0 +1,11 @@
+---
+# handlers file for da.traefik_k8s
+- name: restart traefik
+  systemd: 
+    state: restarted
+    name: traefik
+  become: true
+
+- name: reload systemctl
+  command: systemctl daemon-reload
+  become: true

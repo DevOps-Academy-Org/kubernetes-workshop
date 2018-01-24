@@ -1,0 +1,6 @@
+---
+# This Playbook installs Docker on all Hosts
+- hosts: all
+  remote_user: root
+  roles:
+    - doa.docker

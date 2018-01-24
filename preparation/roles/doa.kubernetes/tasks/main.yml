@@ -1,0 +1,39 @@
+---
+# tasks file for doa.kubernetes
+- name: Install apt https transport support
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+  become: true
+
+- name: Install Kubernetes official apt key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    id: A7317B0F
+    state: present
+  become: true
+
+- name: Kubernetes apt repository
+  apt_repository:
+    repo: 'deb http://apt.kubernetes.io/ kubernetes-xenial main'
+    state: present
+  become: true
+
+- name: update apt cache and get official kubernetes
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  become: true
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: install bash completion for kubectl
+  shell: echo "source <(kubectl completion bash)" >> /root/.bashrc

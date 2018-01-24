@@ -1,0 +1,27 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Check if kubeadm is properly installed
+      command: kubeadm version
+      become: yes
+      register: output
+      failed_when: output.rc != 0
+      changed_when: false
+
+    - name: Check if kubectl is properly installed
+      command: kubectl help 
+      become: yes
+      register: output
+      failed_when: output.rc != 0
+      changed_when: false
+
+    - name: Check if kubelet is properly installed
+      command: kubelet --version version
+      become: yes
+      register: output
+      failed_when: output.rc != 0
+      changed_when: false
+
+

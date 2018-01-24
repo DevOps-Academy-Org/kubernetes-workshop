@@ -1,0 +1,46 @@
+---
+# tasks file for da.traefik_k8s
+- name: Download Traefik and install to /usr/local/bin
+  get_url:
+    url: https://github.com/containous/traefik/releases/download/v1.4.6/traefik_linux-amd64
+    dest: /usr/local/bin/traefik
+    mode: 0755
+  become: true
+
+- name: Create traefik SystemD Service File
+  template: src=traefik.service.j2 dest=/lib/systemd/system/traefik.service
+  notify:
+    - reload systemctl
+  become: true
+
+- name: Create traefik Service Account File
+  template: src=traefik_serviceaccount.yaml.j2 dest=/tmp/traefikservice.yaml
+  become: true
+
+- name: install traefik service account
+  shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f /tmp/traefikservice.yaml
+
+- name: install traefik rbac rules
+  shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+
+- name: get bearer token from k8s
+  shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl describe secret --namespace=kube-system $(KUBECONFIG=/etc/kubernetes/admin.conf kubectl get secrets --namespace=kube-system| grep traefik-ingress-controller | cut -f1 -d ' ') | grep -E '^token' | cut -f2 -d':' | tr -d '\t'
+  register: traefiktoken
+  become: true
+
+- name: create traefik config file
+  template: src=traefik.toml.j2 dest=/etc/traefik.toml
+  notify:
+    - restart traefik
+
+- name: Ensure traefik  will start on boot
+  systemd:
+    name: 'traefik'
+    enabled: yes
+  become: true
+
+- name: Ensure traefik is running
+  systemd:
+    name: 'traefik'
+    state: 'started'
+  become: true

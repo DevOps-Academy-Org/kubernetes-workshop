@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Check if Docker is properly installed
+      command: docker ps
+      become: yes
+      register: output
+      changed_when: false
+

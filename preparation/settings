@@ -1,0 +1,18 @@
+#!/bin/sh
+# The Workshop Name
+WORKSHOP='k8s-workshop'
+
+#Participants taking part in that Workshop
+PARTICIPANTS=1
+
+# Machines per Participant
+MACHINES=3
+
+# MD5 SSH Fingerprint of your self-generated key. Ensure the Public key is already know to Digital Ocean
+SSH_FINGERPRINT='47:11:de:ad:be:ef:12:34:56:78:89:20:06:5a:3a:94'
+
+# Ubuntu Version. Yes, this can also be CentOS. Deployment script (workshop-userdata) currently assumes Ubuntu...
+UBUNTU_VERSION='ubuntu-16-04-x64'
+
+# File being generated for printing and handing out to participants
+LIST_FILE='machinelist'

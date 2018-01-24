@@ -1,0 +1,6 @@
+---
+# This Playbook installs traefik for k8s on all masters (assuming masters hostname ends with 01)
+- hosts: '*01'
+  remote_user: root
+  roles:
+    - da.traefik_k8s
