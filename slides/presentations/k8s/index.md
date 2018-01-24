@@ -42,14 +42,6 @@ Bjoern Pohl, Senior Systems Engineer@Paessler
 
 ---
 
-## Droplets
-Droplets are Digital Oceans's term for Virtual Machines. 
-
-Everyone should have a scrap of paper with 3 IPs for them on it.
-We'll use them today for installing a single-master and a two-node Kubernetes cluster.
-
----
-
 ## What is Kubernetes ?
 
 " An open-source platform designed to automate deploying, scaling, and operating application containers."
@@ -398,7 +390,7 @@ j
 
 ---
 
-### Overview from a Net Perspective
+### Overview from a network perspective
 <img style="height: 700px;" src="images/kube_netview.svg"/>
 
 ---
