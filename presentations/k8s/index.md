@@ -779,7 +779,7 @@ kubectl delete ingress --all
 ---
 #Thanks!
 
-* https://github.com/mcslow/k8s-course
+* https://github.com/DevOps-Academy-Org/kubernetes-workshop
 
 
 
