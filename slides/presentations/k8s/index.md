@@ -66,7 +66,7 @@ Note: Deployment mess, immutability, declarative rollout, self-healing, decoupli
 * Introduction to all of the major components which are somewhat involved in running a Kubernetes Cluster
 * Installation of a basic multi-node Kubernetes Cluster
 * Deploying a simple flask Web Application on our Kubernetes Cluster
-
+---
 ## What we won't cover today
 
 * Further aspects of High Availability (HA)
