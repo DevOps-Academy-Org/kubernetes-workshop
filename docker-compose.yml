@@ -1,0 +1,14 @@
+revealjs:
+  image: agiled/reveal.js-docker
+  ports:
+    - "8000:8000"
+    - "35729:35729"
+  volumes:
+   - ./presentations:/revealjs/presentations
+#shell:
+#  build: shell
+#  ports:
+#    - "57575:57575"
+#  volumes:
+#    - .:/slides
+

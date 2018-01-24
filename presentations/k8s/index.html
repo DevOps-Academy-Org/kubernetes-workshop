@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Kubernetes</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		
+		<link rel="stylesheet" href="../../css/reveal.css">
+		<link rel="stylesheet" href="../../css/theme/solarized.css" id="theme">
+		<link rel="stylesheet" href="../../plugin/footer/title-footer.css">
+		<link rel="stylesheet" href="./custom.css">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../css/print/pdf.css' : '../../css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="../../lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section data-markdown="index.md"
+				  data-separator="^---"  
+				  data-separator-vertical="^--"  
+				  data-separator-notes="^Note:"  
+				  data-charset="utf8">
+				</section>
+
+
+
+		</div>
+
+		<script src="../../lib/js/head.min.js"></script>
+		<script src="../../js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				//////////////////////
+				// IMPORTANT OPTIONS 
+				/////////////////////
+
+				// Display controls in the bottom right corner
+				controls: false,
+
+				// Display a presentation progress bar
+				progress: true,
+
+				// Display the page number of the current slide
+				slideNumber: false,
+
+				// Push each slide change to the browser history
+				history: true,
+
+				// Turns fragments on and off globally
+				fragments: true,
+
+				// Opens links in an iframe preview overlay
+				previewLinks: true,
+
+				// Transition style
+				transition: 'zoom', // none/fade/slide/convex/concave/zoom
+
+				// Transition speed
+				transitionSpeed: 'default', // default/fast/slow
+
+				// Transition style for full page slide backgrounds
+				backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+				// Number of slides away from the current that are visible
+				viewDistance: 3,
+
+				//////////////////////
+				// UNIMPORTANT OPTIONS 
+				/////////////////////
+
+				// Enable keyboard shortcuts for navigation
+				keyboard: true,
+
+				// Enable the slide overview mode
+				overview: true,
+
+				// Vertical centering of slides
+				center: true,
+
+				// Enables touch navigation on devices with touch input
+				touch: true,
+
+				// Loop the presentation
+				loop: false,
+
+				// Change the presentation direction to be RTL
+				rtl: false,
+
+				// Randomizes the order of slides each time the presentation loads
+				shuffle: false,
+
+
+				// Flags if the presentation is running in an embedded mode,
+				// i.e. contained within a limited portion of the screen
+				embedded: false,
+
+				// Flags if we should show a help overlay when the questionmark
+				// key is pressed
+				help: true,
+
+				// Flags if speaker notes should be visible to all viewers
+				showNotes: false,
+
+				// Number of milliseconds between automatically proceeding to the
+				// next slide, disabled when set to 0, this value can be overwritten
+				// by using a data-autoslide attribute on your slides
+				autoSlide: 0,
+
+				// Stop auto-sliding after user input
+				autoSlideStoppable: true,
+
+				// Use this method for navigation when auto-sliding
+				autoSlideMethod: Reveal.navigateNext,
+
+				// Enable slide navigation via mouse wheel
+				mouseWheel: false,
+
+				// Hides the address bar on mobile devices
+				hideAddressBar: true,
+
+
+				// Parallax background image
+				// parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+				// Parallax background size
+				// parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+				// Number of pixels to move the parallax background per slide
+				// - Calculated automatically unless specified
+				// - Set to 0 to disable movement along an axis
+				// parallaxBackgroundHorizontal: null,
+				// parallaxBackgroundVertical: null
+
+
+
+				math: {
+				  mathjax: '../../MathJax/MathJax.js',
+				  config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+				},
+
+				menu: {
+				    // Specifies which side of the presentation the menu will 
+				    // be shown. Use 'left' or 'right'.
+				    side: 'left',
+				
+				    // Add slide numbers to the titles in the slide list.
+				    // Use 'true' or format string (same as reveal.js slide numbers)
+				    numbers: false,
+				
+				    // Specifies which slide elements will be used for generating
+				    // the slide titles in the menu. The default selects the first
+				    // heading element found in the slide, but you can specify any
+				    // valid css selector and the text from the first matching
+				    // element will be used.
+				    // Note: that a section data-menu-title attribute or an element
+				    // with a menu-title class will take precedence over this option
+				    titleSelector: 'h1, h2, h3, h4, h5, h6',
+				
+				    // Hide slides from the menu that do not have a title.
+				    // Set to 'true' to only list slides with titles.
+				    hideMissingTitles: false,
+				
+				    // Add markers to the slide titles to indicate the 
+				    // progress through the presentation
+				    markers: false,
+				
+				    // Specify custom panels to be included in the menu, by
+				    // providing an array of objects with 'title', 'icon'
+				    // properties, and either a 'src' or 'content' property.
+				    custom: false,
+				
+				    // Specifies the themes that will be available in the themes
+				    // menu panel. Set to 'false' to hide themes panel.
+				    themes: [
+				        { name: 'Black', theme: '../../css/theme/black.css' },
+				        { name: 'White', theme: '../../css/theme/white.css' },
+				        { name: 'League', theme: '../../css/theme/league.css' },
+				        { name: 'Sky', theme: '../../css/theme/sky.css' },
+				        { name: 'Beige', theme: '../../css/theme/beige.css' },
+				        { name: 'Simple', theme: '../../css/theme/simple.css' },
+				        { name: 'Serif', theme: '../../css/theme/serif.css' },
+				        { name: 'Blood', theme: '../../css/theme/blood.css' },
+				        { name: 'Night', theme: '../../css/theme/night.css' },
+				        { name: 'Moon', theme: '../../css/theme/moon.css' },
+				        { name: 'Solarized', theme: '../../css/theme/solarized.css' }
+				    ],
+				
+				    // Specifies if the transitions menu panel will be shown.
+				    transitions: true,
+				
+				    // Adds a menu button to the slides to open the menu panel.
+				    // Set to 'false' to hide the button.
+				    openButton: false,
+				
+				    // If 'true' allows the slide number in the presentation to
+				    // open the menu panel. The reveal.js slideNumber option must 
+				    // be displayed for this to take effect
+				    openSlideNumber: false,
+				
+				    // If true allows the user to open and navigate the menu using
+				    // the keyboard. Standard keyboard interaction with reveal
+				    // will be disabled while the menu is open.
+				    keyboard: true
+				},
+                                // Chalkboard Button configuration
+				keyboard: {
+				    67: function() { RevealChalkboard.toggleNotesCanvas() },    // toggle notes canvas when 'c' is pressed
+				    66: function() { RevealChalkboard.toggleChalkboard() }, // toggle chalkboard when 'b' is pressed
+				    46: function() { RevealChalkboard.clear() },    // clear chalkboard when 'DEL' is pressed
+				     8: function() { RevealChalkboard.reset() },    // reset chalkboard data on current slide when 'BACKSPACE' is pressed
+				    68: function() { RevealChalkboard.download() }, // downlad recorded chalkboard drawing when 'd' is pressed
+				},
+				chalkboard: { 
+				    src: null,
+				    readOnly: false,
+				    toggleChalkboardButton: { left: "100px", bottom: "30px", top: "auto", right: "auto" },
+				    toggleNotesButton: { left: "70px", bottom: "30px", top: "auto", right: "auto" },
+				},
+
+				chart : {
+				  // Taken from chartjs documentation
+				  items : [
+				  {
+				    selector : "#chart-frame-1",
+				    type : "line",
+				    data : {
+				      labels: ["January", "February", "March", "April", "May", "June", "July"],
+				      datasets: [
+				      {
+					label: "My First dataset",
+					fillColor: "rgba(220,220,220,0.2)",
+					strokeColor: "rgba(220,220,220,1)",
+					pointColor: "rgba(220,220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220,220,220,1)",
+					data: [65, 59, 80, 81, 56, 55, 40]
+				      },
+				      {
+					label: "My Second dataset",
+					fillColor: "rgba(151,187,205,0.2)",
+					strokeColor: "rgba(151,187,205,1)",
+					pointColor: "rgba(151,187,205,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: [28, 48, 40, 19, 86, 27, 90]
+				      }
+				      ]
+				    },
+				    options : {
+				      responsive:true
+				    }
+				  }
+				  ]
+				},
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+				// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+				{ src: '../../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+				// Interpret Markdown in <section> elements
+				{ src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+				// Syntax highlight for <code> elements
+				{ src: '../../plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+				// Zoom in and out with Alt+click
+				{ src: '../../plugin/zoom-js/zoom.js', async: true },
+
+				// Speaker notes
+				{ src: '../../plugin/notes/notes.js', async: true },
+
+				// MathJax
+				{ src: '../../plugin/math/math.js', async: true },
+
+				// Menu
+				{ src: '../../plugin/menu/menu.js' },
+
+				// Chalkboard
+				{ src: '../../plugin/chalkboard/chalkboard.js' },
+				
+				// Footer
+				{ src: '../../plugin/footer/title-footer.js', async: true, callback: function() { title_footer.initialize(); } },
+
+				// Charts
+				{ src: '../../plugin/chartjs/Chart.min.js'},
+				{ src: '../../plugin/chartjs/charted.js'}, // This is the plugin
+				// vis
+				{ src: '../../plugin/visjs/dist/vis.js', async: false},
+				{ src: './graphs.js', async: true}
+				]
+
+			});
+		</script>
+
+	</body>
+</html>
