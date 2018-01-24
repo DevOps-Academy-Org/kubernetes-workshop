@@ -150,9 +150,6 @@ docker ps
 ###### this needs to be done on all of your Droplets
 
 We need yet another APT Repository to get 
-* kubeadm - which we will use to bootstrap our cluster
-* kubelet - which is the node's agent which manages your PODs
-* kubectl - which is the universal command line client to manage your cluster
 
 ```bash
 apt-get update && apt-get install -y apt-transport-https
@@ -165,7 +162,6 @@ deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
 apt-get update
-
 apt-get install -y kubelet kubeadm kubectl
 
 ```
