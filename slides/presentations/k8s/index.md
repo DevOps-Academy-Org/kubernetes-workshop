@@ -376,6 +376,8 @@ Kubernetes still needs Hardware :-)
 * (Worker) Node (formerly Minion): Host in your cluster that runs a workload
 * Master: Controls all Nodes, usually doesn't run workloads (but can)
 
+---
+
 #### POD
 
 * POD: Unit formed of several containers. One POD runs on one Node
@@ -387,7 +389,7 @@ Kubernetes still needs Hardware :-)
 ---
 
 ### Overview from a network perspective
-<img style="height: 700px;" src="images/kube_netview.svg"/>
+<img style="height: 600px;" src="images/kube_netview.svg"/>
 
 ---
 
@@ -442,11 +444,15 @@ kubectl <resource> delete -f some_object.yaml
 
 * Abstraction which defines a set of PODs
   * including access- and restart policies
+
 ---
+
 #### DNS
 
 * Kubernetes runs it's own DNS service for all containers, giving them access to individual containers and PODs
+
 ---
+
 #### Ingress Controllers
 * Manages all your inbound traffic and routes them to your services/PODs/containers
   * Will be defined as an object, but usually triggers a component outside your Kubernetes cluster
@@ -536,6 +542,7 @@ root@k8s-workshop-1-01:~/k8s_flask# docker run -p 80:80 flaski:latest
 ```
 
 ---
+
 ##  Registry
 Kubernetes needs a docker registy to pull the Container. Using a local registry is complicated, as Kubernetes doesn't play well with local (insecure) registries.
 So we'll use docker hub.
