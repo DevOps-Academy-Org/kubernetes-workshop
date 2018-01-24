@@ -440,13 +440,6 @@ kubectl <resource> delete -f some_object.yaml
 
 ---
 
-#### Kubernetes Services
-
-* Abstraction which defines a set of PODs
-  * including access- and restart policies
-
----
-
 #### DNS
 
 * Kubernetes runs it's own DNS service for all containers, giving them access to individual containers and PODs
