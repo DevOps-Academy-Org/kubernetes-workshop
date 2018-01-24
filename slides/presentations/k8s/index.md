@@ -2,11 +2,11 @@
 ## Before we begin
 * Ensure you have a working SSH Client
 * Ensure you are logged into our Wifi and can connect to the Internet
-* Ensure you have the Digital Ocean ssh key set up
+* Ensure you have the Digital Ocean SSH key set up
 
 For your convenience:
 
-Add host entries for all 3 Cloud Servers to your computer:
+Add host entries for all 3 Virtual Machines to your computer:
 ```
 master  1.1.1.1
 node1   2.2.2.2
@@ -15,43 +15,48 @@ node2   3.3.3.3
 (use the 3 IPs from the paper as they are ordered on the paper slice)
 
 Help: https://goo.gl/315SCi
+
 ---
+
 <section data-state="no-title-footer">
 ## K8S Workshop for Beginners 
 
 <img style="height: 300px;" src="images/kubernetes-logo.svg"/>
-## docker meetup franken
-Bjoern Pohl, Senior Systems Engineer @Paessler
+## Docker Meetup Bamberg
+Bjoern Pohl, Senior Systems Engineer@Paessler
+
 ---
+
 ## Agenda
 * Preparations
-* A small Introduction to Kubernetes
-* Setting up a basic Kubernetes Cluster
+* A small introduction to Kubernetes
+* Setting up a basic Kubernetes cluster
 * Break
-* Some Basics about Kubernetes
-* running a simple docker container
-* creating a service
-* Programming a minimal Flask Web Application
-* Deploying our Application to the Cluster
-* Extending our Application
+* Some basics about Kubernetes
+* Running a simple docker container
+* Creating a service
+* Programming a minimal Flask web application
+* Deploying our application to the cluster
+* Extending our application
 * Bonus: Installing a full-fledged software loadbalancer
+
 ---
+
 ## Droplets
-Droplets are  Digital Oceans's wording of a Cloud Server. 
+Droplets are Digital Oceans's term for Virtual Machines. 
 
-Everyone should have a scrap of paper with 3 of them on it.
-Amazon would call them EC2 instances.
-We'll use them today for installing a single-master and two-node Kubernetes Cluster.
-
-
+Everyone should have a scrap of paper with 3 IPs for them on it.
+We'll use them today for installing a single-master and a two-node Kubernetes cluster.
 
 ---
+
 ## What is Kubernetes ?
 
-" An open-source platform designed to automate deploying, scaling, and operating application containers. "
+" An open-source platform designed to automate deploying, scaling, and operating application containers."
 
 ---
-## Which Problems does Kubernetes address?
+
+## Which problems does Kubernetes address?
 
 * Deployment issues (runs on my machine...)
 * (Lack of) separation of concerns
@@ -60,38 +65,46 @@ We'll use them today for installing a single-master and two-node Kubernetes Clus
 * ...
 
 Note: Deployment mess, immutability, declarative rollout, self-healing, decoupling, easy scaling, microservice-ready, separation of concerns
+
 ---
+
 ## What we we'll cover today 
 
-* Introduction to all of the major components which are somewhat involved in running a Kubernetes Cluster
-* Installation of a basic multi-node Kubernetes Cluster
-* Deploying a simple flask Web Application on our Kubernetes Cluster
+* Introduction to all of the major components which are somewhat involved in running a Kubernetes cluster
+* Installation of a basic multi-node Kubernetes cluster
+* Deploying a simple Flask web application on our Kubernetes cluster
+
 ---
+
 ## What we won't cover today
 
 * Further aspects of High Availability (HA)
-* Deep dive into internals of Kubernetes (alternative SDN Solutions, Security aspects)
-* Advanced Topics like Logging, Cloud Deployment, Monitoring
-* Special Ingress Controllers ( except traefik :) )
+* Deep dive into internals of Kubernetes (alternative SDN solutions, security aspects)
+* Advanced topics like logging, cloud deployment, monitoring
+* Special ingress controllers ( except Traefik :) )
+
 ---
+
 ## A Brief introduction how a Kubernetes cluster looks like
 <img style="height: 500px;" src="images/kubeover.svg"/>
 
 ---
+
 ## Installation methods
 
 * Docker4mac only - now comes with Kubernetes built-in (dead easy)
 * Minikube (super easy)
 * Kubeadm (so-so, we'll see :) )
-* From Scratch (pita)
+* From scratch (pita)
 * Tons of cloud-enabled solutions, terraform, ansible modules (ymmv)
-* Several Ready-to-use offers (AKS, EKS,...) 
+* Several ready-to-use offers (AKS, EKS, ...) 
 
 https://kubernetes.io/docs/setup/pick-right-solution/
 
 ---
+
 ## Prepare Docker installation
-###### this needs to be done on all of your droplets
+###### this needs to be done on all of your Droplets
 
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
@@ -113,78 +126,90 @@ apt-cache policy|grep docker
  500 https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages
      origin download.docker.com
 ```
+
 ---
+
 ## Install Docker 
-###### this needs to be done on all of your droplets
+###### this needs to be done on all of your Droplets
 
 ```bash
 apt-get install -y docker-ce=17.03.2~ce-0~ubuntu-xenial
 ```
 https://goo.gl/VpnyyJ
 
-We can't use the newest Docker Release as even the newest Kubernetes Version
+We can't use the latest Docker release as even the most recent Kubernetes version
 only supports Docker 17.03.
 
 ---
 
 ## Check if Docker is running
-###### this can be done on all of your droplets
+###### this can be done on all of your Droplets
 
 ```bash
 docker info
 docker ps
 ```
-`docker info` should give you some useful information about docker's current status
 
+`docker info` should give you some useful information about Docker's current status
 
 ---
-## Prepare Kubernetes Installation
-###### this needs to be done on all of your droplets
 
-We need another APT Repository to get 
-* kubeadm - which we will use to bootstrap our Cluster
-* kubelet - this is the Node's agent which manages your Pods
-* kubectl - which is the universal command line client to manage your Cluster
+## Prepare Kubernetes installation
+###### this needs to be done on all of your Droplets
+
+We need yet another APT Repository to get 
+* kubeadm - which we will use to bootstrap our cluster
+* kubelet - which is the node's agent which manages your PODs
+* kubectl - which is the universal command line client to manage your cluster
 
 ```bash
 apt-get update && apt-get install -y apt-transport-https
+
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg \
     | apt-key add -
+
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
+
 apt-get update
+
 apt-get install -y kubelet kubeadm kubectl
 
 ```
 https://goo.gl/fSCgrQ
+
 ---
+
 ## Check if all nessecary tools are installed
-###### this can be to be done on all of your droplets
+###### this can be to be done on all of your Droplets
 
 ```bash
 kubeadm version
 kubectl version
 kubelet --version # note the two dashes, don't forget them!
 ```
+
 Every command should output it's Version
 
 ---
-## Initialize the Kubernetes Cluster
-###### this **only** needs to be done on your first droplet, k8s-workshop-x-01
 
-Now, we need to bootstrap our Cluster. We'll check the meaning of the cryptic option later...
+## Initialize the Kubernetes cluster
+###### this **only** needs to be done on your first Droplet, k8s-workshop-x-01
+
+Now, we need to bootstrap our cluster. We'll check the meaning of the cryptic option later...
 ```bash
 kubeadm init --pod-network-cidr=192.168.0.0/16
 ```
 https://goo.gl/7n8RPK
 
-This might take some time and will print a lot of lines. 
+Running this command might take some time and will print a lot of output. 
 
 Please copy the line starting with `kubeadm join --token....` to a local text editor, we'll need it soon!
 
 ---
-###### this **only** needs to be done on your first droplet, k8s-workshop-x-01
+
+###### this **only** needs to be done on your first Droplet, k8s-workshop-x-01
 kubeadm init generates a yaml-formatted configuration file, we'll need to point our command line tools to it's location
 ```
 export KUBECONFIG=/etc/kubernetes/admin.conf
@@ -193,10 +218,11 @@ echo "export KUBECONFIG=$KUBECONFIG" >> ~/.bashrc
 https://goo.gl/zy89So
 
 ---
-## Installing a Software Defined Network Plugin
-###### this **only** needs to be done on your first droplet, k8s-workshop-x-01
 
-Kubernetes needs an SDN layer to securely communicate beetween all of it's hosts.
+## Installing a Software Defined Network Plugin
+###### this **only** needs to be done on your first Droplet, k8s-workshop-x-01
+
+Kubernetes needs an SDN layer to securely communicate beetween all of it's cluster nodes.
 
 So we'll need to install a SDN Plugin of our choice:
 ```
@@ -208,30 +234,34 @@ https://goo.gl/ycPfT2
 This might take some seconds...
 ---
 
-## Joining the other Nodes
-###### this **only** needs to be done on the two remaining droplets
+## Joining the other nodes
+###### this **only** needs to be done on the two remaining Droplets
 
-The other Nodes can join the cluster simply by executing the *kubectl join* command we got from our kubeadm init command:
+The other nodes can join the cluster simply by executing the *kubectl join* command we got from our kubeadm init command previously:
 ```
 kubeadm join --token a1f4d9.e056ad31bb9dab03 46.101.183.195:6443 --discovery-token-ca-cert-hash sha256:62ef70345a4467817827cf2a52aeecae68c44475192d6201cb1aad299c802ea1
 ```
 (please don't copy'n'paste, it won't work :))
+
 ---
+
 ## Checking the cluster status
 ###### this should be done on the master
-You can always check the status of your Master and Nodes with
+You can always check the status of your master and nodes with
 ```
 kubectl get nodes
 ```
-Please grant the cluster a minute to get ready. After some seconds it should lool like this:
+Please give the cluster a minute to get ready. After some seconds it should look like this:
 ```
 NAME                STATUS    ROLES     AGE       VERSION
 k8s-workshop-1-01   Ready     master    5m        v1.9.2
 k8s-workshop-1-02   Ready     <none>    1m        v1.9.2
 k8s-workshop-1-03   Ready     <none>    1m        v1.9.2
 ```
+
 ---
-### Giving the Nodes a role
+
+### Giving the nodes a role
 ###### this should be done on the master
 As seen, the two worker nodes do not yet have a role. Let's fix that and give them a node role.
 (actually, this is a bug in kubeadm...)
@@ -251,6 +281,7 @@ https://goo.gl/Lmw7M3
 :)
 
 ---
+
 ## Install kubectl bash completion
 
 Makes life easier:
@@ -260,58 +291,73 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 https://goo.gl/XRyYqJ
 
 ---
-## mission accomplished
+
+## Mission accomplished
 
 Our cluster is now fully operational and is ready to serve some workload.
 
-Some less important components are still missing, we'll get to that later
+Some less important components are still missing, we'll get to that later.
 
 
 ---
+
 Break
+
 ---
 ## Involved Components
 
 ---
+
 ### Bare Metal or Cloud Servers
 
 Kubernetes still needs Hardware :-)
 
 * Bare Metal(x86,arm,x390)
 * Operating System (Linux, Windows)
+
 ---
+
 ### Container Runtime
 
 * Docker
 * rKt
 
 ---
+
 ### etcD
 
-* K-V Database 
+* K-V database 
+
 ---
+
 #### kubectl
 
 * Command Line Interface to Kubernetes
 
 ---
+
 #### kubelet
 
-* Node Agent running on every Node, managing your PodSpec definitions
+* Node agent running on every node, managing your PodSpec definitions
+
 ---
+
 #### kube-proxy
 
-* Handles in- and outgoing Network Traffic
-  * R-R Loadbalancing
+* Handles in- and outgoing network traffic
+  * R-R loadbalancing
   * Plugins like DNS
 ---
+
 #### kube-apiserver
 
 * Servers API Requests
+
 ---
+
 #### kube-scheduler
 
-* Manages Workload distribution
+* Manages workload distribution
 
 ---
 #### kubernetes controller-manager
@@ -320,12 +366,15 @@ Kubernetes still needs Hardware :-)
   * replication controller
   * endpoint controller
   * ...
+
 ---
+
 #### SDN (Software defined Network, Flannel, Calico,...)
 
 * Routes, encapsulates (and possibly encrypts) your inter-node network traffic
 
 ---
+j
 #### Web UI
 
 * Graphical User Interface to Kubernetes
@@ -333,22 +382,25 @@ Kubernetes still needs Hardware :-)
 (we won't cover that today)
 
 ---
+
 #### Terms
 
-* (worker)Node (formerly Minion): Host in your Cluster that runs workload
-* Master: Controls all Nodes, usually doesn't run workload (but can)
+* (Worker) Node (formerly Minion): Host in your cluster that runs a workload
+* Master: Controls all Nodes, usually doesn't run workloads (but can)
 
 #### POD
 
-* Pod: Unit formed of several containers. One Pod runs on one Node
-  * Example: A Web Server Container and a Database might form a POD.
+* POD: Unit formed of several containers. One POD runs on one Node
+  * Example: A Web Server container and a database might form a POD.
   * Both will run on the same Node
-  * No Network separation inside the Pod (unlike docker-compose)
+  * No network separation inside the POD (unlike docker-compose)
     * this is quite a big difference and is important for developers. We'll see later why.
 
 ---
+
 ### Overview from a Net Perspective
 <img style="height: 700px;" src="images/kube_netview.svg"/>
+
 ---
 
 #### Kubernetes Namespaces
@@ -361,6 +413,7 @@ kubectl get all #wohoo. thats because kube-system usually is masked.
 ```
 
 ---
+
 #### Kubernetes Contexts
 
 * Again, namespaces, but managed and switchable, persistant
@@ -373,9 +426,11 @@ kubectl config set-context cool_project2 --namespace=othernamespace
 kubectl config use-context cool_project
 
 ```
+
 ---
+
 #### Kubernetes Objects
-* Everything in Kubernetes is defined as Objects
+* Everything in Kubernetes is defined as objects
 * Every object has an API endpoint
 * Object definition can be written in JSON or YAML
   * Use YAML :)
@@ -394,18 +449,19 @@ kubectl <resource> delete -f some_object.yaml
 ```
 
 ---
+
 #### Kubernetes Services
 
-* Abstraction which defines a set of Pods
-  * including Access- and Restart Policies
+* Abstraction which defines a set of PODs
+  * including access- and restart policies
 ---
 #### DNS
 
-* Kubernetes runs it's own DNS Service for all Containers, giving them access to individual Containers and PODs
+* Kubernetes runs it's own DNS service for all containers, giving them access to individual containers and PODs
 ---
 #### Ingress Controllers
-* Manages all your inbound traffic and routes them to your Services/Pods/Containers
-  * Will be defined as an object, but usually triggers a component outside your Kubernetes Cluster
+* Manages all your inbound traffic and routes them to your services/PODs/containers
+  * Will be defined as an object, but usually triggers a component outside your Kubernetes cluster
     * Traefik
     * Nginx
     * F8 Loadbalancer
@@ -414,14 +470,19 @@ kubectl <resource> delete -f some_object.yaml
 Some LB solutions can also be applied inside the K8S Cluster.
 
 We'll use traeffic as an external Loadbalancer in our Workshop
+
 ---
+
 break
+
 ---
-#### Let's build a simple Flask Application
+
+#### Let's build a simple Flask application
 
 https://goo.gl/Cg6vkf or /root/workshop/simple_flask
 
 ---
+
 #### app.py
 ```python
 from flask import Flask
@@ -435,7 +496,9 @@ def hello_world():
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=80)
 ```
+
 ---
+
 #### Requirements.txt
 ```
 Flask==0.12.2
@@ -455,19 +518,21 @@ RUN pip install -r requirements.txt
 ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
+
 ---
+
 ## Build the application
 ```
 docker build  --tag flaski:latest .
 ```
 
-quick shot with standard docker if it's working:
+Quick test with standard Docker if it's working:
 ```
 docker run -p 8888:80 flaski:latest
 ```
 (open https://your_masters_host_ip:8888) in your browser.
 
-Fun note: this is how it looks like if you expose port 80 instead of 8888...:
+Funny side note: this is how it looks like if you expose port 80 instead of 8888...:
 ```
 root@k8s-workshop-1-01:~/k8s_flask# docker run -p 80:80 flaski:latest
  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
@@ -481,11 +546,11 @@ root@k8s-workshop-1-01:~/k8s_flask# docker run -p 80:80 flaski:latest
 66.249.73.151 - - [20/Jan/2018 15:05:36] "GET /the-best-essential-oils-for-libido-to-love-honor-and.pdf HTTP/1.1" 404 -
 66.249.73.204 - - [20/Jan/2018 15:05:38] "GET /marantz-vc5200-dvd-changer-service-manual-download.pdf HTTP/1.1" 404 -
 ```
+
 ---
 ##  Registry
 Kubernetes needs a docker registy to pull the Container. Using a local registry is complicated, as Kubernetes doesn't play well with local (insecure) registries.
 So we'll use docker hub.
-
 
 ```
 docker login  #login is 'meetupk8sworkshop', password will be given
@@ -495,7 +560,9 @@ docker push meetupk8sworkshop/${HOSTNAME}_miniflask
 https://goo.gl/ic5Aun
 
 ${HOSTNAME} contains your Master's Hostname, just to ensure we have unique Image Names (we'll all use the same account and namespace )
+
 ---
+
 #### Your first Kubernetes deployment
 
 We'll use a simple imperative command to spin up a deployment in Kubernetes.
@@ -507,31 +574,35 @@ kubectl describe deployment flaski
 kubectl describe pod flaski
 kubectl describe pod flaski|grep 'Name:'
 ```
-Kubernetes adds a random string to your deployment name to form the pod name(s).
+Kubernetes adds a random string to your deployment name to form the POD name(s).
 
-We can now forward a port to our master by using the pod name (make sure you'll take the name from the grep above):
+We can now forward a port to our master by using the POD name (make sure you'll take the name from the grep above):
 ```
 kubectl port-forward flaski-random-letters-and-so 8888:80 & #this wan't to stay in the foreground. I won't let it.
 curl localhost:8888
 kill $! #cleanup your port-forward
 ```
+
 ---
-#### Scale your Deployment
-If you did look closely, Kubernetes deployed this Pod to one Node. Hey, we've got two!
+
+#### Scale your deployment
+If you did look closely, Kubernetes deployed this POD to one node. Hey, we've got two!
 ```
 kubectl scale deployment flaski --replicas=2
 kubectl describe deployment flaski
 ```
-Ok. Nice. But not really useful - only reachable with stupid port forward command. Let's clean up this rubbish!
+Ok. Nice. But not really useful - only reachable with a stupid port forward command. Let's clean up this rubbish!
 ```
 kubectl delete deployment flaski
 kubectl get pods
 kubectl get deployments
 ```
+
 ---
+
 #### Creating a PodObject
 
-Lets put our Container definition into an object.
+Lets put our container definition into an object.
 Make sure to replace the image with the image you created recently.
 ```yaml
 #flaski.yaml
@@ -549,8 +620,10 @@ spec:
           protocol: TCP
 ```
 https://goo.gl/2h1R7T
+
 ---
-run it with
+
+Run it with
 ```
 kubectl apply -f flaski.yaml
 ```
@@ -558,11 +631,13 @@ Let's see...
 ```
 kubectl describe pod flaski
 ```
----
-## Short interlude
-We now have a Pod consisting of one or more containers running. What about daily tasks the Docker Admin is used to?
 
-No Problem, it's nearly the same.
+---
+
+## Short interlude
+We now have a POD consisting of one or more containers running. What about daily tasks the Docker admin is used to?
+
+No problem, it's nearly the same.
 ```
 kubectl logs flaski
  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
@@ -573,7 +648,7 @@ kubectl logs flaski
 kubectl exec flaski -ti /bin/sh
 /app #
 ```
-A Pod can contain more than one container. If so, and you want another than the first container, you need to specify the container with `-c`.
+A POD can contain more than one container. If so, and you want another than the first container, you need to specify the container with `-c`.
 ---
 Again, cleanup please. We can use the same file to wipe everything we generated.
 ```
@@ -585,7 +660,7 @@ kubectl delete -f flaski.yaml
 Labels and annotations can be used to tag resources with meta informations.
 This is massively used in Kubernetes to identify, select and group resources.
 
-Let's give our flaski pod a Label to identify it as a test app:
+Let's give our flaski POD a label to identify it as a test app:
 ```
 kubectl label pod flaski "app=flaski"
 ```
@@ -596,12 +671,14 @@ Let's check how the object looks like now:
 kubectl get pod flaski -o yaml |ack --passthru 'app:'
 ```
 (ack just highlights the line because it's quite a lot of output)
+
 ---
-Add a column with our Label to a list of pods
+
+Add a column with our label to a list of PODs
 ```
 kubectl get pod -L app
 ```
-Select Pods based on labels:
+Select PODs based on labels:
 ```
 root@k8s-workshop-1-01:~# kubectl get pods --selector="app=flaski"
 NAME      READY     STATUS    RESTARTS   AGE
@@ -612,11 +689,14 @@ No resources found.
 ```
 
 ---
-### ReplicaSets
-Ok, now we've got a Pod running, maybe two. But if one dies, it died. No one will take care of recreation.
-And there's no declarative way of scaling pods (we only used the imperative way by now.)
-So, there's an object called `ReplicaSet` which manages or Pods, takes care of recreation and the correct scaling.
+
+### Replica Sets
+Ok, now we've got a POD running, maybe two. But if one dies, it dies. No one will take care of recreating it.
+And there's no declarative way of scaling PODs (we only used the imperative way by now.)
+So, there's an object called `ReplicaSet` which manages our PODs, takes care of recreation and the correct scaling.
+
 ---
+
 Let's create a ReplicaSet using our Docker Image:
 ```yaml
 apiVersion: extensions/v1beta1
@@ -642,15 +722,17 @@ kubectl apply -f rs_flaski.yaml
 ```
 
 ---
-#### Creating a Deployment
-So you learned about Replicasets...
 
-* Deployments nearly look the same like Replicasets
-* used to handle Rolling Updates
-* Never use Replicasets, always use Deployments :)
+#### Creating a Deployment
+So you learned about Replica Sets...
+
+* Deployments nearly look the same like Replica Sets
+* used to handle rolling updates
+* Never use Replica Sets, always use Deployments :)
 
 ---
-We just need to modify our ReplicaSet a little bit...
+
+We just need to modify our Replica Set a little bit...
 ```yaml
 #dp_flaski.yaml
 apiVersion: extensions/v1beta1
@@ -674,12 +756,14 @@ spec:
         - name: flaski
           image: meetupk8sworkshop/k8s-workshop-1-01_miniflask
 ```
+
 ---
+
 As always, apply:
 ```
 kubectl apply -f dp_flaski.yaml
 ```
-Lets Scale our Application:
+Let's scale our application:
 
 ```
 kubectl scale deployment flaskiset --replicas=1
@@ -689,8 +773,9 @@ kubectl scale deployment flaskiset --replicas=2
 ```
 
 ---
+
 ### Services
-Ok. We can create a Pod now, ensure it's running, etc... - but we are still unable to connect to our Service in an appropriate way.
+Ok. We can create a POD now, ensure it's running, etc... - but we are still unable to connect to our service in an appropriate way.
 Let's fix that. 
 
 ```yaml
@@ -713,16 +798,19 @@ kubectl get service flaskiservice
 ```
 
 ---
-### A more sophisticated Application
 
-* Our Application currently only returns a string
-* Let's add a database tou our Application
+### A more sophisticated application
+
+* Our application currently only returns a string
+* Let's add a database to our application
 * Go to `/root/workshop/simple_flask`
 * `git checkout redis`
 
 We have added a simple redis-dependent function in our app.
-We now need to add the Redis Container to our Pod and add some Environment variables...
+We now need to add the Redis container to our POD and add some environment variables...
+
 ---
+
 ```
 docker build  --tag redisflaski:latest .
 docker tag redisflaski:latest meetupk8sworkshop/${HOSTNAME}_redisflask
@@ -762,14 +850,18 @@ spec:
 
 ```
 and apply it as usual...
+
 ---
+
 ### Bonus: Traefik
 
-* A 'Real' Loadbalancer in front of our Cluster
-* Allow low port Ingress
+* A 'real' loadbalancer in front of our cluster
+* Allow low port ingress
 
 Live Demo...
+
 ---
+
 ### Clean it up
 ```
 kubectl delete deployments --all
@@ -777,9 +869,8 @@ kubectl delete services --all
 kubectl delete ingress --all
 ```
 ---
-#Thanks!
+
+# Thanks!
 
 * https://github.com/DevOps-Academy-Org/kubernetes-workshop
-
-
 
