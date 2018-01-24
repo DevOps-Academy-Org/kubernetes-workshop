@@ -366,7 +366,7 @@ Kubernetes still needs Hardware :-)
 * Routes, encapsulates (and possibly encrypts) your inter-node network traffic
 
 ---
-j
+
 #### Web UI
 
 * Graphical User Interface to Kubernetes
