@@ -566,7 +566,7 @@ Kubernetes adds a random string to your deployment name to form the POD name(s).
 
 We can now forward a port to our master by using the POD name (make sure you'll take the name from the grep above):
 ```
-kubectl port-forward flaski-random-letters-and-so 8888:80 & #this wan't to stay in the foreground. I won't let it.
+kubectl port-forward flaski-random-letters-and-so 8888:80 & #this wants to stay in the foreground. I won't let it.
 curl localhost:8888
 kill $! #cleanup your port-forward
 ```
