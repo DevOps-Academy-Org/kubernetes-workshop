@@ -12,7 +12,7 @@ master  1.1.1.1
 node1   2.2.2.2
 node2   3.3.3.3
 ```
-(use the 3 IPs from the paper as they are ordered on the paper slice)
+(use the 3 IPs as they are ordered on the strip of paper you were given)
 
 Help: https://goo.gl/315SCi
 
@@ -60,7 +60,7 @@ Note: Deployment mess, immutability, declarative rollout, self-healing, decoupli
 
 ---
 
-## What we we'll cover today 
+## What we will cover today 
 
 * Introduction to all of the major components which are somewhat involved in running a Kubernetes cluster
 * Installation of a basic multi-node Kubernetes cluster
@@ -178,7 +178,7 @@ kubectl version
 kubelet --version # note the two dashes, don't forget them!
 ```
 
-Every command should output it's Version
+Every command should output its version
 
 ---
 
@@ -193,12 +193,12 @@ https://goo.gl/7n8RPK
 
 Running this command might take some time and will print a lot of output. 
 
-Please copy the line starting with `kubeadm join --token....` to a local text editor, we'll need it soon!
+Please copy the line starting with `kubeadm join --token....` to a local text editor, we'll need it soon, but don't run it yet!
 
 ---
 
 ###### this **only** needs to be done on your first Droplet, k8s-workshop-x-01
-kubeadm init generates a yaml-formatted configuration file, we'll need to point our command line tools to it's location
+kubeadm init generates a yaml-formatted configuration file; we'll need to point our command line tools to its location
 ```
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "export KUBECONFIG=$KUBECONFIG" >> ~/.bashrc
@@ -210,9 +210,9 @@ https://goo.gl/zy89So
 ## Installing a Software Defined Network Plugin
 ###### this **only** needs to be done on your first Droplet, k8s-workshop-x-01
 
-Kubernetes needs an SDN layer to securely communicate beetween all of it's cluster nodes.
+Kubernetes needs an SDN layer to securely communicate beetween all of its cluster nodes.
 
-So we'll need to install a SDN Plugin of our choice:
+So we'll need to install a SDN Plugin of our choice; we have chosen to use Calico:
 ```
 kubectl apply -f \
  https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
@@ -239,7 +239,7 @@ You can always check the status of your master and nodes with
 ```
 kubectl get nodes
 ```
-Please give the cluster a minute to get ready. After some seconds it should look like this:
+Please give the cluster a minute to get ready. After some seconds, it should look like this:
 ```
 NAME                STATUS    ROLES     AGE       VERSION
 k8s-workshop-1-01   Ready     master    5m        v1.9.2
@@ -282,9 +282,9 @@ https://goo.gl/XRyYqJ
 
 ## Mission accomplished
 
-Our cluster is now fully operational and is ready to serve some workload.
+Our cluster is now fully operational and is ready to serve some workloads.
 
-Some less important components are still missing, we'll get to that later.
+Some less important components are still missing, we'll get to them later.
 
 
 ---
@@ -406,7 +406,7 @@ kubectl get all #wohoo. thats because kube-system usually is masked.
 
 #### Kubernetes Contexts
 
-* Again, namespaces, but managed and switchable, persistant
+* Again, namespaces, but managed and switchable, persistent
 
 persists in $HOME/.kube/config
 
@@ -442,7 +442,7 @@ kubectl <resource> delete -f some_object.yaml
 
 #### DNS
 
-* Kubernetes runs it's own DNS service for all containers, giving them access to individual containers and PODs
+* Kubernetes runs its own DNS service for all containers, giving them access to individual containers and PODs
 
 ---
 
@@ -456,7 +456,7 @@ kubectl <resource> delete -f some_object.yaml
 
 Some LB solutions can also be applied inside the K8S Cluster.
 
-We'll use traeffic as an external Loadbalancer in our Workshop
+We'll use Traefik as an external Loadbalancer in our Workshop
 
 ---
 
@@ -636,7 +636,7 @@ kubectl logs flaski
 kubectl exec flaski -ti /bin/sh
 /app #
 ```
-A POD can contain more than one container. If so, and you want another than the first container, you need to specify the container with `-c`.
+A POD can contain more than one container. If so, and you want one other than the first container, you need to specify the container with `-c`.
 ---
 Again, cleanup please. We can use the same file to wipe everything we generated.
 ```
@@ -653,10 +653,10 @@ Let's give our flaski POD a label to identify it as a test app:
 kubectl label pod flaski "app=flaski"
 ```
 
-Let's check how the object looks like now:
+Let's check how the object looks now:
 
 ```
-kubectl get pod flaski -o yaml |ack --passthru 'app:'
+kubectl get pod flaski -o yaml | ack --passthru 'app:'
 ```
 (ack just highlights the line because it's quite a lot of output)
 
@@ -714,8 +714,8 @@ kubectl apply -f rs_flaski.yaml
 #### Creating a Deployment
 So you learned about Replica Sets...
 
-* Deployments nearly look the same like Replica Sets
-* used to handle rolling updates
+* Deployments look nearly the same as Replica Sets
+* Deployments are used to handle rolling updates
 * Never use Replica Sets, always use Deployments :)
 
 ---
@@ -844,7 +844,7 @@ and apply it as usual...
 ### Bonus: Traefik
 
 * A 'real' loadbalancer in front of our cluster
-* Allow low port ingress
+* Allows low port ingress
 
 Live Demo...
 
