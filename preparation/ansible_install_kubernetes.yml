@@ -1,5 +1,5 @@
 ---
-# This Playbook installs Docker on all Hosts
+# This Playbook installs Kubernetes on all Hosts
 - hosts: all
   remote_user: root
   roles:
