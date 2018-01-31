@@ -274,7 +274,7 @@ https://goo.gl/Lmw7M3
 
 Makes life easier:
 ```
-echo "source <(kubectl completion bash)" >> ~/.bashrc
+echo "source <(kubectl completion bash)" >> /etc/bash_completion.d/kubectl
 ```
 https://goo.gl/XRyYqJ
 
