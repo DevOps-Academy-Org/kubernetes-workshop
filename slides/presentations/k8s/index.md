@@ -689,7 +689,7 @@ Let's create a ReplicaSet using our Docker Image:
 apiVersion: extensions/v1beta1
 kind: ReplicaSet
 metadata:
-  name: flaskiSet
+  name: flaskiset
 spec:
   replicas: 2
   template:
