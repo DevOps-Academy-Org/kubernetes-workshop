@@ -425,7 +425,7 @@ kubectl config use-context cool_project
 * Object definition can be written in JSON or YAML
   * Use YAML :)
 
-Kubernetes Objects kan be applied to the cluster with
+Kubernetes Objects can be applied to the cluster with
 ```bash
 kubectl apply -f some_object.yaml
 ```
