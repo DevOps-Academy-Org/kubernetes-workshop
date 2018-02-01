@@ -638,12 +638,6 @@ kubectl exec flaski -ti /bin/sh
 ```
 A POD can contain more than one container. If so, and you want one other than the first container, you need to specify the container with `-c`.
 ---
-Again, cleanup please. We can use the same file to wipe everything we generated.
-```
-kubectl delete -f flaski.yaml
-#$ pod "flaski" deleted
-```
----
 ### Labels and annotations
 Labels and annotations can be used to tag resources with meta informations.
 This is massively used in Kubernetes to identify, select and group resources.
@@ -675,7 +669,12 @@ flaski    1/1       Running   0          57m
 root@k8s-workshop-1-01:~# kubectl get pods --selector="apptype=railsi"
 No resources found.
 ```
-
+---
+Again, cleanup please. We can use the same file to wipe everything we generated.
+```
+kubectl delete -f flaski.yaml
+#$ pod "flaski" deleted
+```
 ---
 
 ### Replica Sets
