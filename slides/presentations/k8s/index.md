@@ -451,7 +451,7 @@ kubectl <resource> delete -f some_object.yaml
   * Will be defined as an object, but usually triggers a component outside your Kubernetes cluster
     * Traefik
     * Nginx
-    * F8 Loadbalancer
+    * F5 BIG-IP Loadbalancer
     * GCE and other Cloud Solutions
 
 Some LB solutions can also be applied inside the K8S Cluster.
